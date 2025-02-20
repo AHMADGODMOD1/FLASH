@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLASH AI S1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: url('https://i.ibb.co/1GqSRfGJ/piyush.jpg') no-repeat center center;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+        }
+        .container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .box {
+            background: url('https://i.ibb.co/Y4qJTZRS/image.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            font-size: 14px;
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        #loginBox {
+            background: url('https://i.ibb.co/d4jm6X16/ba794cd6-eff0-4a11-8460-31576910395a.jpg') no-repeat center center;
+            background-size: cover;
+            margin-top: 50%; /* Adjusted margin-top */
+            border-radius: 15px;
+            width: 250px;
+            display: flex;
+            flex-direction: column; /* Added to stack elements vertically */
+            align-items: center; /* Center align items */
+        }
+        h1 { 
+            font-size: 28px; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            text-shadow: 0 0 12px white; 
+            display: block;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+        button { 
+            background: linear-gradient(45deg, #ff4d4d, #cc0000);
+            color: white; 
+            font-size: 18px; 
+            cursor: pointer; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover { 
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+        }
+        .free-service-text {
+            color: white;
+            font-size: 14px;
+            margin-top: 10px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000428, #004e92);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            animation: fadeOut 5s forwards;
+        }
+        .splash-screen h1 {
+            font-size: 48px;
+            animation: zoomIn 2s infinite alternate;
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        .welcome-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1001;
+            text-align: center;
+        }
+        .welcome-message h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .welcome-message p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .welcome-message label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .welcome-message button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="splash-screen">
+        <h1>🚀 FLASH AI S1 🚀</h1>
+        <p>Loading...</p>
+    </div>
+
+    <div class="container">
+        <div class="box" id="loginBox">
+            <h1>🚀 FLASH AI S1 🚀</h1>
+            <input type="text" id="keyInput" placeholder="Enter Paid Key">
+            <button onclick="checkKey()">Login</button>
+            <p class="free-service-text" onclick="showAlert()">Click Here For FLASH AI S1 Free Service</p>
+            <p id="message" style="color: red;"></p>
+        </div>
+
+        <div class="box" id="homeBox" style="display: none;">
+            <h1>🚀 FLASH AI S1 🚀</h1>
+
+            <div class="box second-box current-period">
+                <h2 id="currentPeriod">📅 Period: Loading...</h2>
+            </div>
+            <div class="box second-box prediction">
+                <h2 id="predictedNumber">🔮 Prediction: Loading...</h2>
+            </div>
+            <div class="box second-box">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Big/Small</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+          
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="welcome-message" id="welcomeMessage">
+        <h2>Welcome to FLASH AI S1 🚀</h2>
+        <p>FLASH AI S1 is a server-based and API-based prediction web application. It provides results based on data and trend analysis. By using this service, you agree to the following terms:</p>
+        <ul>
+            <li>You understand that predictions are based on data analysis and are not guaranteed.</li>
+            <li>You agree to use this service at your own risk.</li>
+        </ul>
+        <label>
+            <input type="checkbox" id="agreeCheckbox"> I agree to the terms and conditions
+        </label>
+        <button onclick="confirmAgreement()">Confirm</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
+    <script>
+        let model;
+
+        async function createModel() {
+            model = tf.sequential();
+            model.add(tf.layers.dense({units: 64, inputShape: [10], activation: 'relu'}));
+            model.add(tf.layers.dense({units: 32, activation: 'relu'}));
+            model.add(tf.layers.dense({units: 16, activation: 'relu'}));
+            model.add(tf.layers.dense({units: 1, activation: 'sigmoid'}));
+            model.compile({optimizer: 'adam', loss: 'binaryCrossentropy', metrics: ['accuracy']});
+        }
+
+        async function trainModel(data) {
+            const xs = tf.tensor2d(data.map(item => item.input));
+            const ys = tf.tensor2d(data.map(item => item.output));
+            await model.fit(xs, ys, {epochs: 50});
+        }
+
+        async function predict(data) {
+            const xs = tf.tensor2d([data]);
+            const prediction = model.predict(xs);
+            return prediction.dataSync()[0];
+        }
+
+        function checkKey() {
+            let enteredKey = document.getElementById("keyInput").value;
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let isValid = users.some(user => user.key === enteredKey);
+
+            if (isValid) {
+                localStorage.setItem("isLoggedIn", "true");
+                showWelcomeMessage();
+            } else {
+                document.getElementById("message").innerText = "Invalid Key!";
+            }
+        }
+
+        function showWelcomeMessage() {
+            document.getElementById("welcomeMessage").style.display = "block";
+        }
+
+        function confirmAgreement() {
+            if (document.getElementById("agreeCheckbox").checked) {
+                document.getElementById("welcomeMessage").style.display = "none";
+                showHomePage();
+            } else {
+                alert("Please accept the agreement to proceed.");
+            }
+        }
+
+        function showHomePage() {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("homeBox").style.display = "block";
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            location.reload();
+        }
+
+        function showAlert() {
+            alert("🚀 FLASH AI S1 Free Service Coming Soon!\n\nWe Are Really Sorry\n\nDue To Some Server And Security Reason We Called Free Service Of FLASH AI S1 But In The Next Update You Will Get Free Service 100%");
+        }
+
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            showWelcomeMessage();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('#dataTable tbody');
+            const predictedNumberElement = document.getElementById('predictedNumber');
+            const currentPeriodElement = document.getElementById('currentPeriod');
+            const winCountElement = document.getElementById('winCount');
+            const lossCountElement = document.getElementById('lossCount');
+
+            const winSound = new Audio('win-sound.mp3');
+            const lossSound = new Audio('loss-sound.mp3');
+
+            let winCount = 0;
+            let lossCount = 0;
+
+            const fetchData = async (url, body) => {
+                try {
+                    let response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+                        body: JSON.stringify(body)
+                    });
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    return null;
+                }
+            };
+
+            const getGameData = async () => {
+                let data = await fetchData('https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList', {
+                    pageSize: 10, pageNo: 1, typeId: 1, language: 0,
+                    random: "ded40537a2ce416e96c00e5218f6859a",
+                    signature: "69306982EEEB19FA940D72EC93C62552",
+                    timestamp: Math.floor(Date.now() / 1000)
+                });
+
+                if (data && data.data && data.data.list) {
+                    return data.data.list.map(item => ({ issue: item.issueNumber, number: Number(item.number) }));
+                }
+                return [];
+            };
+
+            const categorizeNumber = (number) => (number >= 0 && number <= 4) ? "Small" : "Big";
+
+            const trendAnalysisPrediction = (data) => {
+                if (data.length < 2) return "No Data";
+
+                const recentData = data.slice(0, 2);
+                let bigCount = recentData.filter(item => item.number > 4).length;
+                let smallCount = recentData.filter(item => item.number <= 4).length;
+
+                return bigCount > smallCount ? "Big" : "Small";
+            };
+
+            const updateDataAndPrediction = async () => {
+                let gameData = await getGameData();
+                if (gameData.length > 0) {
+                    tableBody.innerHTML = '';
+                    gameData.forEach(item => {
+                        tableBody.innerHTML += `<tr><td>${item.issue}</td><td>${categorizeNumber(item.number)}</td></tr>`;
+                    });
+
+                    let prediction = trendAnalysisPrediction(gameData);
+                    predictedNumberElement.textContent = `🔮 Prediction: ${prediction}`;
+
+                    let currentIssueNumber = gameData[0].issue;
+                    let nextPeriod = (BigInt(currentIssueNumber) + 1n).toString();
+                    currentPeriodElement.textContent = `📅 Period: ${nextPeriod}`;
+
+                    checkWinLoss(prediction, categorizeNumber(gameData[0].number));
+                }
+            };
+
+            const checkWinLoss = (prediction, actual) => {
+                let popupWin = document.getElementById('popupWin');
+                let popupLoss = document.getElementById('popupLoss');
+
+                if (prediction === actual) {
+                    winCount++;
+                    popupWin.style.display = 'block';
+                    winSound.play();
+                    setTimeout(() => { popupWin.style.display = 'none'; }, 3000);
+                } else {
+                    lossCount++;
+                    popupLoss.style.display = 'block';
+                    lossSound.play();
+                    setTimeout(() => { popupLoss.style.display = 'none'; }, 3000);
+                }
+
+                winCountElement.textContent = winCount;
+                lossCountElement.textContent = lossCount;
+            };
+
+            function startReverseTimer() {
+                function updateTimer() {
+                    let now = new Date();
+                    if (now.getSeconds() === 0) updateDataAndPrediction();
+                }
+
+                setInterval(updateTimer, 1000);
+                updateTimer();
+            }
+
+            createModel().then(() => {
+                updateDataAndPrediction();
+                startReverseTimer();
+            });
+        });
+    </script>
+</body>
+</html>
